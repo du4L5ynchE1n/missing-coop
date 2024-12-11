@@ -1,2 +1,2 @@
 # missing-coop
-POC for Missing Cross-Origin Opener Policy
+POC for Cross-Site Window Control attack
