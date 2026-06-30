@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "use": "sig",
+      "alg": "RS256",
+      "kid": "cc_800013/public.pem",
+      "n": "xKBclB9CjSPWx3cuXXoJfJLRq37pzxr5R_H1e78wvsKRkLFy954pDPV8oyL70Btp3VwTKLRG7897ADAjnLEunSpwOuQ8V7kvsfTa8O3WL8Va_tK4u1RDVGFINlPRTNuWJlN_oB26aXabbHBE8dsRI3IigVnVj7Hx0Lax924nq-dCCZV-mGU4zZOG_zr69-j8C2mr1i1Mp7EDYKVjirBUlDdEyvNnGWeWpnj39UMINXUkfxhztREsvOQ_9DCmIt86ZuNV_5vW2QJixa3zN7ryI3VsO3sSERL_AbMCzsbYkbR9H4KIcYI68tFp5k-DOBiyR_Vz2aymfeCNIOP_ItR7NQ",
+      "e": "AQAB"
+    }
+  ]
+}
